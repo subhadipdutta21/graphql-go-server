@@ -6,7 +6,6 @@ package graph
 import (
 	"context"
 	"fmt"
-	"strconv"
 
 	"github.com/subh1994/graphql-go-server/graph/generated"
 	"github.com/subh1994/graphql-go-server/graph/model"
@@ -19,7 +18,7 @@ func (r *mutationResolver) CreateLink(ctx context.Context, input model.NewLink) 
 	link.Title = input.Title
 	link.Address = input.Address
 	linkID := link.Save()
-	return &model.Link{ID: strconv.FormatInt(linkID, 10), Title: link.Title, Address: link.Address}, nil
+	return &model.Link{ID: linkID, Title: link.Title, Address: link.Address}, nil
 
 }
 
@@ -37,14 +36,13 @@ func (r *mutationResolver) RefreshToken(ctx context.Context, input model.Refresh
 
 func (r *queryResolver) Links(ctx context.Context) ([]*model.Link, error) {
 	// panic(fmt.Errorf("not implemented"))
-	var links []*model.Link
-	dummyLink := model.Link{
-		Title:   "Subhadip Dutta",
-		Address: "Kol",
-		User:    &model.User{Name: "admin"},
+	var resultLinks []*model.Link
+	var dbLinks []links.Link
+	dbLinks = links.GetAll()
+	for _, link := range dbLinks {
+		resultLinks = append(resultLinks, &model.Link{ID: link.ID, Title: link.Title, Address: link.Address})
 	}
-	links = append(links, &dummyLink)
-	return links, nil
+	return resultLinks, nil
 }
 
 // Mutation returns generated.MutationResolver implementation.
