@@ -3,7 +3,6 @@ package postgres
 import (
 	"context"
 	"log"
-	"os"
 	"time"
 
 	"github.com/jackc/pgx/v4/pgxpool"
@@ -12,11 +11,11 @@ import (
 var pool *pgxpool.Pool
 
 func InitDbPool() {
-	host := os.Getenv("host")
-	port := os.Getenv("pgport")
-	user := "postgres"
-	password := "subh1994"
-	dbname := "go_test"
+	host := "localhost"
+	port := "5432"
+	user := "dockerpg"
+	password := "dockerpg"
+	dbname := "graphql-go-server"
 
 	databaseUrl := "host=" + host + " port=" + port + " user=" + user + " password=" + password + " dbname=" + dbname
 
